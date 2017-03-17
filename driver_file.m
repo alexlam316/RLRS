@@ -85,7 +85,7 @@ path0 = pathPlanning2(botSim,inflated_boundaries,target,start_position)*10
 % modifiedMap = map;
 % scans = 30;
 % inner_boundary = map;
-% Connecting_Distance = 100;
+% Connecting_Distance = 20;
 % botSim.setMap(modifiedMap);
 % botSim.setScanConfig(botSim.generateScanConfig(scans));
 % 
@@ -102,10 +102,14 @@ path0 = pathPlanning2(botSim,inflated_boundaries,target,start_position)*10
 % drawnow;
 % 
 % waypoints = pathPlanning(start_position, target, map, Connecting_Distance);
-
+% optimisedPath = optimisePath(waypoints)
+% for i=1:length(optimisedPath)
+%     plot(optimisedPath(i,2),optimisedPath(i,1),'x')
+% end
+    
 %% Path Move
 % @input: currentPosition, nextPosition, currentAngle
-% pathMoveError = pathMove(waypoints, Estimated_Bot, scans);
+% pathMoveError = pathMove(optimisedPath, Estimated_Bot, scans);
 
 % aries path plan with johans path move
 % hold on
