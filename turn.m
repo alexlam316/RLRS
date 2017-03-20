@@ -26,10 +26,10 @@ function turn(angle)
         mTurn1.ActionAtTachoLimit   = 'Brake';
 
         % where are we?
-        mTurn1.ResetPosition();
-        data                        = mTurn1.ReadFromNXT();
-        pos                         = data.Position;
-        mTurn1.TachoLimit           = int16(turnTicks + pos);
+%         mTurn1.ResetPosition();
+%         data                        = mTurn1.ReadFromNXT();
+%         pos                         = data.Position;
+        mTurn1.TachoLimit           = int16(turnTicks);
 
 
         mTurn2          = mTurn1; % copy data

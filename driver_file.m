@@ -21,12 +21,12 @@ map=[0,0;60,0;60,45;45,45;45,59;106,59;106,105;0,105];  %default map
 
 botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
 % botSim.randomPose(10); %puts the robot in a random position at least 10cm away from a wall
-start_position = [40 20];
+start_position = [44 22];
 start_angle = 0;
 botSim.setBotPos(start_position);
 botSim.setBotAng(start_angle);
 % target = botSim.getRndPtInMap(10);  %gets random target.
-target = [80 80];
+target = [88 84];
 
 botSim.drawMap();
 drawnow;
@@ -78,39 +78,39 @@ tic %starts timer
 % @output: pathArray, lost
 
 % Testing Johans version
-inflated_boundaries = boundary_inflation(map, 14); % alternative inflation function
-botSim2 = BotSim(inflated_boundaries,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
-path0 = pathPlanning2(botSim2,map,target,start_position)*10
+% inflated_boundaries = boundary_inflation(map, 14); % alternative inflation function
+% botSim2 = BotSim(inflated_boundaries,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
+% path0 = pathPlanning2(botSim,map,target,start_position)*10
 
 % Parameters for path planning only
-% modifiedMap = map;
-% scans = 30;
-% inner_boundary = map;
-% Connecting_Distance = 20;
-% botSim.setMap(modifiedMap);
-% botSim.setScanConfig(botSim.generateScanConfig(scans));
-% 
-% Estimated_Bot = BotSim(modifiedMap);
-% Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
-% Estimated_Bot.setBotPos(start_position);
-% Estimated_Bot.setBotAng(start_angle);
-% 
-% figure(1)
-% hold off; %the drawMap() function will clear the drawing when hold is off
-% botSim.drawMap(); %drawMap() turns hold back on again, so you can draw the bots
-% botSim.drawBot(30,'g'); %draw robot with line length 30 and green
-% Estimated_Bot.drawBot(50, 'r');
-% drawnow;
-% 
-% waypoints = pathPlanning(start_position, target, map, Connecting_Distance);
-% optimisedPath = optimisePath(waypoints)
+modifiedMap = map;
+scans = 30;
+inner_boundary = map;
+Connecting_Distance = 20;
+botSim.setMap(modifiedMap);
+botSim.setScanConfig(botSim.generateScanConfig(scans));
+
+Estimated_Bot = BotSim(modifiedMap);
+Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
+Estimated_Bot.setBotPos(start_position);
+Estimated_Bot.setBotAng(start_angle);
+
+figure(1)
+hold off; %the drawMap() function will clear the drawing when hold is off
+botSim.drawMap(); %drawMap() turns hold back on again, so you can draw the bots
+botSim.drawBot(30,'g'); %draw robot with line length 30 and green
+Estimated_Bot.drawBot(50, 'r');
+drawnow;
+
+waypoints = pathPlanning(start_position, target, map, Connecting_Distance);
+optimisedPath = optimisePath(waypoints)
 % for i=1:length(optimisedPath)
 %     plot(optimisedPath(i,2),optimisedPath(i,1),'x')
 % end
     
 %% Path Move
 % @input: currentPosition, nextPosition, currentAngle
-% pathMoveError = pathMove(optimisedPath, Estimated_Bot, scans);
+ pathMoveError = pathMove(optimisedPath, Estimated_Bot, scans);
 
 % aries path plan with johans path move
 % hold on
@@ -126,25 +126,25 @@ path0 = pathPlanning2(botSim2,map,target,start_position)*10
 
 
 %testing johans path move
-for i=1:length(path0)
-    plot(path0(i,1)/10,path0(i,2)/10,'x')
-end
-
-figure
-path=optimisePath(path0);
-botSim.drawMap();
-drawnow;
-hold on
-for i=1:length(path)
-    plot(path(i,1)/10,path(i,2)/10,'x')
-end
-angle = 0;
-debug=1;      
-botSim.setBotPos([path(1,1)/10,path(1,2)/10])
-botSim.drawBot(10);
-for i=1:length(path)-1
-    angle = pathMove2([path(i,1),path(i,2)], angle, [path(i+1,1),path(i+1,2)],botSim,debug);
-end
+% for i=1:length(path0)
+%     plot(path0(i,1)/10,path0(i,2)/10,'x')
+% end
+% 
+% figure
+% path=optimisePath(path0);
+% botSim.drawMap();
+% drawnow;
+% hold on
+% for i=1:length(path)
+%     plot(path(i,1)/10,path(i,2)/10,'x')
+% end
+% angle = 0;
+% debug=1;      
+% botSim.setBotPos([path(1,1)/10,path(1,2)/10])
+% botSim.drawBot(10);
+% for i=1:length(path)-1
+%     angle = pathMove2([path(i,1),path(i,2)], angle, [path(i+1,1),path(i+1,2)],botSim,debug);
+% end
 %% Done!
 NXT_PlayTone(1200,100, handle); %plays a tone
 NXT_PlayTone(800,800, handle); %plays a tone
