@@ -1,4 +1,4 @@
-function [pathMoveError] = pathMove(waypoints, Estimated_Bot, scans, botSim) %botSim argument is optional
+function [pathMoveError] = pathMove(waypoints, Estimated_Bot, botSim) %botSim argument is optional
 pathMoveError = 0;    
 num_waypoints = numel(waypoints)/2;
 
@@ -6,8 +6,8 @@ num_waypoints = numel(waypoints)/2;
         angle = pi/180*atan2d(waypoints((num_waypoints-m),1)-waypoints((num_waypoints-m+1),1),waypoints((num_waypoints-m),2)-waypoints((num_waypoints-m+1),2));
         distance = sqrt(((waypoints((num_waypoints-m),1)-waypoints((num_waypoints-m+1),1))^2)+(waypoints((num_waypoints-m),2)-waypoints((num_waypoints-m+1),2))^2)   
 
-        Estimated_angle = Estimated_Bot.getBotAng()
-        turn_angle = angle-Estimated_angle
+        Estimated_angle = Estimated_Bot.getBotAng()*180/pi;
+        turn_angle = angle-Estimated_angle;
         
         if nargin >= 4
             botSim.turn(turn_angle);

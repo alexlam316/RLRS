@@ -116,8 +116,8 @@ while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
         
     botSim.turn(turn_angle);        
     botSim.move(move); %move the real robot. These movements are recorded for marking 
-    
-    turn(turn_angle*180/pi);
+    turn_
+    turn(turn_angle);
     moveRobot(move);
     
     

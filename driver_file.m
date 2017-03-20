@@ -25,7 +25,7 @@ start_angle = 0;
 botSim.setBotPos(start_position);
 botSim.setBotAng(start_angle);
 % target = botSim.getRndPtInMap(10);  %gets random target.
-target = [88 84];
+target = [20 20];
 
 botSim.drawMap();
 drawnow;
@@ -59,9 +59,9 @@ tic %starts timer
 % @input: map
 % @output: estimatedLocation, estimatedAngle
 
-% [botSim, Estimated_Bot] = PFL(botSim, map,500, 30);
-% disp(Estimated_Bot.getBotPos())
-% 
+[botSim, Estimated_Bot] = PFL(botSim, map,500,10, 20,handle);
+disp(Estimated_Bot.getBotPos())
+
 % returnedBot = localise(botSim,map,target,handle); %Where the magic happens
 % 
 % resultsTime = toc %stops timer
@@ -82,24 +82,26 @@ tic %starts timer
 % path0 = pathPlanning2(botSim,map,target,start_position)*10
 
 % Parameters for path planning only
-modifiedMap = map;
-scans = 30;
-inner_boundary = map;
+% modifiedMap = map;
+% scans = 30;
+% inner_boundary = map;
 Connecting_Distance = 20;
-botSim.setMap(modifiedMap);
-botSim.setScanConfig(botSim.generateScanConfig(scans));
+% botSim.setMap(modifiedMap);
+% botSim.setScanConfig(botSim.generateScanConfig(scans));
 
-Estimated_Bot = BotSim(modifiedMap);
-Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
-Estimated_Bot.setBotPos(start_position);
-Estimated_Bot.setBotAng(start_angle);
+% Estimated_Bot = BotSim(modifiedMap);
+% Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
+% Estimated_Bot.setBotPos(start_position);
+% Estimated_Bot.setBotAng(start_angle);
+% 
+% figure(1)
+% hold off; %the drawMap() function will clear the drawing when hold is off
+% botSim.drawMap(); %drawMap() turns hold back on again, so you can draw the bots
+% botSim.drawBot(30,'g'); %draw robot with line length 30 and green
+% Estimated_Bot.drawBot(50, 'r');
+% drawnow;
 
-figure(1)
-hold off; %the drawMap() function will clear the drawing when hold is off
-botSim.drawMap(); %drawMap() turns hold back on again, so you can draw the bots
-botSim.drawBot(30,'g'); %draw robot with line length 30 and green
-Estimated_Bot.drawBot(50, 'r');
-drawnow;
+start_position = Estimated_Bot.getBotPos();
 
 waypoints = pathPlanning(start_position, target, map, Connecting_Distance);
 optimisedPath = optimisePath(waypoints)
@@ -109,7 +111,7 @@ optimisedPath = optimisePath(waypoints)
     
 %% Path Move
 % @input: currentPosition, nextPosition, currentAngle
- pathMoveError = pathMove(optimisedPath, Estimated_Bot, scans);
+ pathMoveError = pathMove(optimisedPath, Estimated_Bot, botSim);
 
 % aries path plan with johans path move
 % hold on
