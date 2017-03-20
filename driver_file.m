@@ -20,7 +20,6 @@ COM_SetDefaultNXT(handle); % set default handle
 map=[0,0;60,0;60,45;45,45;45,59;106,59;106,105;0,105];  %default map
 
 botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
-% botSim.randomPose(10); %puts the robot in a random position at least 10cm away from a wall
 start_position = [44 22];
 start_angle = 0;
 botSim.setBotPos(start_position);

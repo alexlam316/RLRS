@@ -10,46 +10,63 @@ function [scanValues] = robotUltrascan(scans)
 
     % create motor object with defined variables
     mScan                       = NXTMotor(Ports);
+    mScan.Power                 = power;
     mScan.ActionAtTachoLimit    = 'Brake';
     tachoLimit                  = round(360/nrScans);
     mScan.TachoLimit            = tachoLimit;
-    mScan.Power                 = power;
-    
-    % reset position to 0
-    mScan.ResetPosition();
     
     for i=1:nrScans
+        mScan.TachoLimit            = tachoLimit;
+        
         % Get the current sound sensor value in dB.
         scanValues(i) = GetUltrasonic(SENSOR_4);
+        
+        % reset position to 0
+        mScan.ResetPosition();
         
         mScan.Stop('off'); % initialise motors
         
         % move
         mScan.SendToNXT();
         mScan.WaitFor();
+        
+        % where are we?
+        data    = mScan.ReadFromNXT();
+        pos     = abs(data.Position);
+        
+        % check position after movement!
+        mScan.TachoLimit              = abs(round(tachoLimit-pos));
+        if mScan.TachoLimit > 0
+            if tachoLimit-pos < 0
+                mScan.Power = -power;
+            end
+            % move
+            mScan.SendToNXT();
+            mScan.WaitFor();
+        end
     
     end
     
-    % move back same amount
-    data                        = mScan.ReadFromNXT();
-    pos1                         = abs(data.Position);
+    % move back
     mScan.Power                 = -power;
-    mScan.TachoLimit            = pos1;
+    mScan.TachoLimit            = 360;
     
     % reset position to 0
     mScan.ResetPosition();
+    
+    mScan.Stop('off'); % initialise motors
     
     mScan.SendToNXT();
     mScan.WaitFor();
     
     % where are we?
     data    = mScan.ReadFromNXT();
-    pos2     = abs(data.Position);
+    pos     = abs(data.Position);
     
     % check position after movement!
-    mScan.TachoLimit              = abs(round(pos1-pos2));
+    mScan.TachoLimit              = abs(round(360-pos));
     if mScan.TachoLimit > 0
-        if pos1-pos2 < 0
+        if 360-pos < 0
             mScan.Power = -power;
         end
         % move

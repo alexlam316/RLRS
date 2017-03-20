@@ -34,7 +34,7 @@ function moveRobot(distance) % distance in milimeters
     % check position after movement!
     mStraight.TachoLimit              = abs(round(pos-tacholimit))
     if mStraight.TachoLimit > 0
-        if pos-distance < 0
+        if pos-tacholimit < 0
             mStraight.Power = -power;
         end
         % move
