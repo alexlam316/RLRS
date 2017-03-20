@@ -78,8 +78,9 @@ tic %starts timer
 % @output: pathArray, lost
 
 % Testing Johans version
-inflated_boundaries = boundary_inflation(map, 10); % alternative inflation function
-path0 = pathPlanning2(botSim,inflated_boundaries,target,start_position)*10
+inflated_boundaries = boundary_inflation(map, 14); % alternative inflation function
+botSim2 = BotSim(inflated_boundaries,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
+path0 = pathPlanning2(botSim2,map,target,start_position)*10
 
 % Parameters for path planning only
 % modifiedMap = map;
