@@ -68,10 +68,10 @@ for q = 1:Num_lines
     end   
 end
 
-for m = 16:(map_x_size-15)
- 	for n = 16:(map_y_size-15)
+for m = 18:(map_x_size-17)
+ 	for n = 18:(map_y_size-17)
     	if grid_map(n,m)==1
-            for p = 1:15
+            for p = 1:17
              inflated_grid_map(n-p,m-p)=1;
              inflated_grid_map(n-p,m+p)=1;
              inflated_grid_map(n+p,m-p)=1;

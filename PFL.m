@@ -111,14 +111,22 @@ while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
 	[max_botScan, max_index] = max(botScan);
 
     turn_angle = (max_index-1)*2*pi/numscan;
+    turn(turn_angle*180/pi);
     
-    move = botScan(max_index)*0.6;
-        
+    collision_scan = collisionscan();%after turning the robot, scan nearby to check if there is collision may caused
+    
+    move = min(collision_scan)*0.4;
+    
+    
+    
+    
+    %move = botScan(max_index)*0.2;
+    moveRobot(move*10);    
     botSim.turn(turn_angle);        
     botSim.move(move); %move the real robot. These movements are recorded for marking 
     
-    turn(turn_angle*180/pi);
-    moveRobot(move);
+    %turn(turn_angle*180/pi);
+    %moveRobot(move*10);
     
     
     for i =1:num %for all the particles.
