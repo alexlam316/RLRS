@@ -156,3 +156,4 @@ toc
 %% Clean before program exit
 COM_CloseNXT(handle); 
 end
+
