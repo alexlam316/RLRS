@@ -15,7 +15,16 @@ function turn(angle)
         angle = 360-angle; % turn in most efficient direction
         TurningSpeed    = -TurningSpeed; % go in opposite direction if negative angle
     end
-    turnTicks           = abs(int16((290/45)*(angle/2)));      % assuming 45dgs turn is 290 ticks
+
+    if(angle>0)
+        f = 300;%postive
+    elseif(angle<0)
+        f = 305;%negative
+    else
+        f = 0; %zero
+    end
+    
+    turnTicks           = abs(int16((f/45)*(angle/2)));      % assuming 45dgs turn is 290 ticks
     if(turnTicks == 0) % do nothing
     else
         Ports               = [MOTOR_B; MOTOR_C];  % motorports for left and right wheel
