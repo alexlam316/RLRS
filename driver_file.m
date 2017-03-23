@@ -59,8 +59,9 @@ tic %starts timer
 % @input: map
 % @output: estimatedLocation, estimatedAngle
 
-[botSim, Estimated_Bot] = PFL(botSim, map,500,10, 20, handle); 
+[botSim, Estimated_Bot] = PFL1(botSim, map,600,10, 20, handle); 
 disp(Estimated_Bot.getBotPos())
+disp(Estimated_Bot.getBotAng())
 a = 1;
 % returnedBot = localise(botSim,map,target,handle); %Where the magic happens
 % 
