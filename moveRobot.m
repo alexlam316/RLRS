@@ -1,7 +1,7 @@
 function moveRobot(distance) % distance in milimeters
     % const will be determined by measurement
     const   = 42*pi/360; % diameter of wheel ~42mm, 360dgs~360click
-    dist    = 1.0*distance/const;
+    dist    = 1.025*distance/const; %1.025
     
     % motor speed
     power = 100;
@@ -11,7 +11,7 @@ function moveRobot(distance) % distance in milimeters
     mStraight = NXTMotor(Ports); 
     mStraight.Stop('off'); % initialise motors
     mStraight.SpeedRegulation = false; % not sure what this actually mean
-    mStraight.SmoothStart = true;
+    mStraight.SmoothStart = false;
     mStraight.Power = power;
     mStraight.ActionAtTachoLimit = 'Brake';
     
