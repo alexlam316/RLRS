@@ -22,9 +22,9 @@ map=[0,0;66,0;66,44;44,44;44,66;110,66;110,110;0,110];  %default map
 
 botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
 start_position = [88 88];
-start_angle = 0;
+start_angle = 180; % in degree
 botSim.setBotPos(start_position);
-botSim.setBotAng(start_angle);
+botSim.setBotAng(start_angle*pi/180);
 % target = botSim.getRndPtInMap(10);  %gets random target.
 target = [44 22];
 
@@ -93,7 +93,7 @@ botSim.setScanConfig(botSim.generateScanConfig(scans));
 Estimated_Bot = BotSim(modifiedMap);
 Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
 Estimated_Bot.setBotPos(start_position);
-Estimated_Bot.setBotAng(start_angle);
+Estimated_Bot.setBotAng(start_angle*pi/180);
 
 figure(1)
 hold off; %the drawMap() function will clear the drawing when hold is off
