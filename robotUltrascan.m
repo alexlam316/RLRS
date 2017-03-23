@@ -30,6 +30,36 @@ function [scanValues] = robotUltrascan(scans)
     
     end
     
+    % where are we?
+    data    = mScan.ReadFromNXT();
+    pos2     = abs(data.Position);
+    
+    % check positi0on after movement!
+    mScan.TachoLimit              = abs(round(pos1-pos2));
+    if mScan.TachoLimit > 0
+        if pos1-pos2 < 0
+            mScan.Power = -power;
+        end
+        % move
+        mScan.SendToNXT();
+        mScan.WaitFor();
+    end
+%     testing version
+%      % where are we?
+%     data    = mScan.ReadFromNXT();
+%     pos     = abs(data.Position);
+%     
+%     % check positi0on after movement!
+%     mScan.TachoLimit              = abs(round(360-pos));
+%     if mScan.TachoLimit > 0
+%         if 360-pos < 0
+%             mScan.Power = -power;
+%         end
+%         % move
+%         mScan.SendToNXT();
+%         mScan.WaitFor();
+%     end
+    
     % move back same amount
     data                        = mScan.ReadFromNXT();
     pos1                         = abs(data.Position);
