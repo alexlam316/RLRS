@@ -16,7 +16,7 @@ for i = 1:num
    
     particles(i).setMotionNoise(0.1); %give the particles some motion noise
     particles(i).setTurningNoise(0.001);
-    particles(i).setSensorNoise(1);
+    particles(i).setSensorNoise(1.5);
 end
 
 n = 0;
@@ -116,9 +116,6 @@ while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
     collision_scan = collisionscan();%after turning the robot, scan nearby to check if there is collision may caused
     
     move = min(collision_scan)*0.4;
-    
-    
-    
     
     %move = botScan(max_index)*0.2;
     moveRobot(move*10);    

@@ -11,13 +11,13 @@ botSim.setMap(modifiedMap);
 %generate some random particles inside the map
 particles(num,1) = BotSim; %how to set up a vector of objects
 
-Estimated_Bot = BotSim(modifiedMap, [1.5, 0.1, 0.001], 0);
+Estimated_Bot = BotSim(modifiedMap, [sensorNoise, motionNoise, turningNoise], 0);
 Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(numscan));
 
 
 for i = 1:num
     particles(i) = BotSim(modifiedMap);  %each particle should use the same map as the botSim object
-    particles(i).randomPose(5); %spawn the particles in random locations
+    particles(i).randomPose(2); %spawn the particles in random locations
     particles(i).setScanConfig(generateScanConfig(particles(i), numscan));
    
     particles(i).setMotionNoise(motionNoise); %give the particles some motion noise
@@ -27,7 +27,7 @@ end
 
 n = 0;
 converged = 0;
-variance = 10;   %variance
+variance = 50;   %variance
 damp = 0;
 while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
     n = n+1; %increment the current number of iterations   
@@ -41,7 +41,7 @@ while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
     
     for i=1:num
         if particles(i).insideMap() ==0
-            particles(i).randomPose(0);
+            particles(i).randomPose(2);
         end
         particle_Scan{i}= particles(i).ultraScan();
     end
