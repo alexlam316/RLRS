@@ -16,7 +16,7 @@ function moveRobot(distance) % distance in milimeters
     mStraight.ActionAtTachoLimit = 'Brake';
     
     % reset position to 0
-      mStraight.ResetPosition();
+    mStraight.ResetPosition();
     
     % where do we want to go?
     % account for errors, i.e. if pos is not 0
@@ -34,8 +34,10 @@ function moveRobot(distance) % distance in milimeters
     % check position after movement!
     mStraight.TachoLimit              = abs(round(pos-tacholimit))
     if mStraight.TachoLimit > 0
-        if pos-tacholimit < 0
+        if tacholimit-pos < 0 
             mStraight.Power = -power;
+        else
+            mStraight.Power = power;
         end
         % move
         mStraight.SendToNXT();

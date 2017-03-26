@@ -18,17 +18,6 @@ function [scanValues] = collisionscan()
     % reset position to 0
     mScan.ResetPosition();
     
-%     for i=1:nrScans
-%         % Get the current sound sensor value in dB.
-%         scanValues(i) = GetUltrasonic(SENSOR_4);
-%         
-%         mScan.Stop('off'); % initialise motors
-%         
-%         % move
-%         mScan.SendToNXT();
-%         mScan.WaitFor();
-%     
-%     end
     mScan.Power                 = power;
     mScan.Stop('off'); % initialise motors
     mScan.SendToNXT();
@@ -74,13 +63,14 @@ function [scanValues] = collisionscan()
     if mScan.TachoLimit > 0
         if pos1-pos2 < 0
             mScan.Power = -power;
+        else
+            mScan.Power = power;
         end
         % move
         mScan.SendToNXT();
         mScan.WaitFor();
     end
-    
-    
+   
     % Close the sound sensor.
     CloseSensor(SENSOR_4);
 end
