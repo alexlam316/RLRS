@@ -17,15 +17,19 @@ COM_SetDefaultNXT(handle); % set default handle
 
 % Ports           = [MOTOR_B; MOTOR_C];  % motorports for left and right wheel
 
-%map=[0,0;60,0;60,45;45,45;45,59;106,59;106,105;0,105];  %default map
+%map=[0,0;60,0;60,45;45,45;45,59;106,59;106,105;0,105];  %the default map
 map=[0,0;66,0;66,44;44,44;44,66;110,66;110,110;0,110];
-botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
-start_position = [44 22];
-start_angle = 0;
-botSim.setBotPos(start_position);
-botSim.setBotAng(start_angle);
+motionNoise = 0.1;
+turningNoise = 0.01;
+sensorNoise = 1.5;
+
+botSim = BotSim(map,[sensorNoise, motionNoise, turningNoise],0);  %sets up a botSim object a map, and debug mode on.
+%start_position = [44 22];
+%start_angle = 0;
+%botSim.setBotPos(start_position);
+%botSim.setBotAng(start_angle);
 % target = botSim.getRndPtInMap(10);  %gets random target.
-target = [20 20];
+target = [22 22];
 
 botSim.drawMap();
 drawnow;
@@ -59,9 +63,9 @@ tic %starts timer
 % @input: map
 % @output: estimatedLocation, estimatedAngle
 
-[botSim, Estimated_Bot] = PFL1(botSim, map,600,10, 20, handle); 
+[botSim, Estimated_Bot] = PFL1(botSim, map,2000,10, 20, handle); 
 disp(Estimated_Bot.getBotPos())
-disp(Estimated_Bot.getBotAng())
+disp(Estimated_Bot.getBotAng()*180/pi)
 a = 1;
 % returnedBot = localise(botSim,map,target,handle); %Where the magic happens
 % 
@@ -83,24 +87,18 @@ a = 1;
 % path0 = pathPlanning2(botSim,map,target,start_position)*10
 
 % Parameters for path planning only
-% modifiedMap = map;
-% scans = 30;
-% inner_boundary = map;
-Connecting_Distance = 20;
-% botSim.setMap(modifiedMap);
-% botSim.setScanConfig(botSim.generateScanConfig(scans));
+modifiedMap = map;
+scans = 30;
+Connecting_Distance = 30;
 
-% Estimated_Bot = BotSim(modifiedMap);
-% Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
-% Estimated_Bot.setBotPos(start_position);
-% Estimated_Bot.setBotAng(start_angle);
-% 
-% figure(1)
-% hold off; %the drawMap() function will clear the drawing when hold is off
-% botSim.drawMap(); %drawMap() turns hold back on again, so you can draw the bots
-% botSim.drawBot(30,'g'); %draw robot with line length 30 and green
-% Estimated_Bot.drawBot(50, 'r');
-% drawnow;
+
+figure(1)
+hold off; %the drawMap() function will clear the drawing when hold is off
+botSim.drawMap(); %drawMap() turns hold back on again, so you can draw the bots
+%botSim.drawBot(30,'g'); %draw robot with line length 30 and green
+Estimated_Bot.drawBot(50, 'r');
+drawnow;
+
 
 start_position = Estimated_Bot.getBotPos();
 
