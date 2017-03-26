@@ -25,8 +25,10 @@ function [scanValues] = robotUltrascan(scans)
         mScan.Stop('off'); % initialise motors
         
         % move
-        mScan.SendToNXT();
-        mScan.WaitFor();
+        if(i<nrScans)
+            mScan.SendToNXT();
+            mScan.WaitFor();
+        end
     
     end
     
@@ -50,6 +52,8 @@ function [scanValues] = robotUltrascan(scans)
     mScan.TachoLimit              = abs(round(pos1-pos2));
     if mScan.TachoLimit > 0
         if pos1-pos2 < 0
+            mScan.Power = power;
+        else
             mScan.Power = -power;
         end
         % move

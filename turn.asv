@@ -54,7 +54,14 @@ function turn(angle)
         
         data2                        = mTurn2.ReadFromNXT();
         pos2                         = data2.Position;
-
+        
+        if (pos1-turnTicks != 0)
+            if (pos1 - turnTicks > 0)
+                mTurn1.Power                = -TurningSpeed;
+            else
+                mTurn1.Power                = TurningSpeed
+            end
+        end
         
         
     end
