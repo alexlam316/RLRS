@@ -48,10 +48,6 @@ function turn(angle)
         mTurn1.Power                = TurningSpeed;
         mTurn1.ActionAtTachoLimit   = 'Brake';
 
-        % where are we?
-%         mTurn1.ResetPosition();
-%         data                        = mTurn1.ReadFromNXT();
-%         pos                         = data.Position;
         mTurn1.TachoLimit           = int16(turnTicks);
 
 
@@ -61,7 +57,7 @@ function turn(angle)
         
         mTurn1.ResetPosition();
         mTurn2.ResetPosition();
-        
+
         mTurn1.SendToNXT(); % send both commands before wait
         mTurn2.SendToNXT();
         mTurn1.WaitFor();
@@ -72,9 +68,7 @@ function turn(angle)
         
         data2                        = mTurn2.ReadFromNXT();
         pos2                         = data2.Position;
-        
-
-        
+       
 %         if(angle_polarity==1)
 %             % check position after movement!
 %             mTurn1.TachoLimit              = abs(round(pos1-turnTicks))
@@ -126,7 +120,7 @@ function turn(angle)
 %             
 %         else
 %         end
-        
+
         
     end
 end
