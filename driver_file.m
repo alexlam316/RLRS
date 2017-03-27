@@ -34,48 +34,15 @@ target = [22 22];
 botSim.drawMap();
 drawnow;
 tic %starts timer
-%% Test functions
-% ass = robotUltrascan(10);
-% b=1;
-% moveRobot(600);
-% turn(180);
-% for i=1:8
-% %     moveRobot(200);
-% %     turn(-180);
-%     ass = robotUltrascan(10);
-% end
-% % botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
-% botSim.drawMap();
-% drawnow;
-% hold on;
-% testPos = [20 20];
-% testTarget = [20 80];
-% plot(testPos(1), testPos(2), 'gx')
-% plot(testTarget(1), testTarget(2), 'rx')
-% angle = 0;
-% path = pathPlanning(testPos, testTarget, map, botSim)
-% for i=1:length(path)-1
-%     angle = pathMove([path(i,1),path(i,2)], angle, [path(i+1,1),path(i+1,2)]);
-% end
 
 
 %% Particle Filter
 % @input: map
 % @output: estimatedLocation, estimatedAngle
 
-[botSim, Estimated_Bot] = PFL1(botSim, map,2000,10, 20, handle); 
-disp(Estimated_Bot.getBotPos())
-disp(Estimated_Bot.getBotAng()*180/pi)
-a = 1;
-% returnedBot = localise(botSim,map,target,handle); %Where the magic happens
-% 
-% resultsTime = toc %stops timer
-% 
-% %calculated how far away your robot is from the target.
-% resultsDis =  distance(target, returnedBot.getBotPos())
-%  
-% robot_position = returnedBot.getBotPos()
-% robot_angle = rem(returnedBot.getBotAng(),6.28319)
+% [botSim, Estimated_Bot] = PFL1(botSim, map,2000,10, 20, handle); 
+% disp(Estimated_Bot.getBotPos())
+% disp(Estimated_Bot.getBotAng()*180/pi)
 
 %% Path Planning
 % @input: position, angle, target, map

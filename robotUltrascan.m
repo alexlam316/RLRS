@@ -18,15 +18,22 @@ function [scanValues] = robotUltrascan(scans)
     % reset position to 0
     mScan.ResetPosition();
     
+    scans = zeros(20,1);
+    
     for i=1:nrScans
         % Get the current sound sensor value in dB.
-        scanValues(i) = GetUltrasonic(SENSOR_4);
         
+        for i=1:20
+           scans(i)= GetUltrasonic(SENSOR_4);
+        end
+        scanValues(i) = mode(scans);
         mScan.Stop('off'); % initialise motors
         
         % move
-        mScan.SendToNXT();
-        mScan.WaitFor();
+        if(i<nrScans)
+            mScan.SendToNXT();
+            mScan.WaitFor();
+        end
     
     end
     
@@ -49,7 +56,9 @@ function [scanValues] = robotUltrascan(scans)
     % check positi0on after movement!
     mScan.TachoLimit              = abs(round(pos1-pos2));
     if mScan.TachoLimit > 0
-        if pos1-pos2 < 0
+       if pos1-pos2 < 0
+            mScan.Power = power;
+        else
             mScan.Power = -power;
         end
         % move

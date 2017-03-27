@@ -1,4 +1,4 @@
-function driver_file2()
+function driver_file()
 
 % verify that the RWTH - Mindstorms NXT toolbox is installed.
 if verLessThan('RWTHMindstormsNXT', '4.01');
@@ -22,7 +22,7 @@ map=[0,0;66,0;66,44;44,44;44,66;110,66;110,110;0,110];  %default map
 
 botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
 start_position = [44 22];
-start_angle = -45; % in degree
+start_angle = 0; % in degree
 target = [88 88];
 
 botSim.setBotPos(start_position);
