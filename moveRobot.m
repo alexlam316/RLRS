@@ -26,6 +26,7 @@ function moveRobot(distance) % distance in milimeters
     % move
     mStraight.SendToNXT();
     mStraight.WaitFor();
+
     
     % where are we?
     data    = mStraight.ReadFromNXT();
