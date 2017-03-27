@@ -13,7 +13,7 @@ function turnRobot(angle)
     
     if((angle/180)>1)
         angle = 360-angle; % turn in most efficient direction
-        TurningSpeed    = -TurningSpeed; % go in opposite direction if negative angle
+        TurningSpeed    = -TurningSpeed; % go in opposite direction if negative angle!
     end
 
     if(angle>0)
