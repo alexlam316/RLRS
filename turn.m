@@ -21,7 +21,7 @@ function turn(angle)
     battery_level = NXT_GetBatteryLevel;
     if(battery_level > 8000)
         if(angle>0)
-            f = 298;%postive
+            f = 300;%postive
         elseif(angle<0)
             f = 304;%negative
         else
@@ -29,9 +29,9 @@ function turn(angle)
         end
     else
         if(angle>0)
-            f = 299;%postive
+            f = 298;%postive
         elseif(angle<0)
-            f = 303;%negative
+            f = 302;%negative
         else
             f = 0; %zero
         end

@@ -16,13 +16,13 @@ handle = COM_OpenNXT(); %open usb port
 COM_SetDefaultNXT(handle); % set default handle
 
 localize_ON = 0; %set value to 1 to enable particle filter, 0 to disable
-path_mode = 3; % set value to 1 for choosing A-star algorithm, set value to 2 for choosing Dijkstra algorithm, 3 probablistic roadmap 
+path_mode = 2; % set value to 1 for choosing A-star algorithm, set value to 2 for choosing Dijkstra algorithm, 3 probablistic roadmap 
 
 map=[0,0;66,0;66,44;44,44;44,66;110,66;110,110;0,110];  %default map
 
 
 start_position = [44 22]; %if not using localisation, use this position as initial position
-start_angle = -45; % in degrees
+start_angle = 0; % in degrees
 target = [88 88]; %target location
 scans = 30; %nr of scans
 tic %starts timer
@@ -69,9 +69,9 @@ if(path_mode == 1)
     waypoints = pathPlanning(start_position, target, map, Connecting_Distance);
     optimisedPath = optimisePath(waypoints);
 elseif(path_mode == 2)
-    inflated_boundaries = boundary_inflation(map, 14);
-    botSim.setMap(inflated_boundaries);
-    botSim.drawMap();
+    inflated_boundaries = boundary_inflation(map, 16);
+%     botSim.setMap(inflated_boundaries);
+%     botSim.drawMap();
     waypoint_coordinates = pathfinder(start_position, target, inflated_boundaries);
     waypoint_coordinates = flipud(waypoint_coordinates);
     optimisedPath = [waypoint_coordinates(:,2),waypoint_coordinates(:,1)];
@@ -87,7 +87,7 @@ elseif(path_mode == 3)
     debug = 0;
     angle = start_angle;
     path = optimisedPath;
-    for i=1:length(optimisedPath)-1
+        for i=1:length(optimisedPath)-1
         angle = pathMove2([path(i,1),path(i,2)], angle, [path(i+1,1),path(i+1,2)],botSim,debug);
     end
 end
