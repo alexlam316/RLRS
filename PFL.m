@@ -1,6 +1,9 @@
 function [botSim, Estimated_Bot] = PFL(botSim, modifiedMap,num, maxNumOfIterations,numscan,handle)
 %Particle Filter Localisation Function
 %numscan = 6;
+motionNoise = 0.1;
+turningNoise = 0.01;
+sensorNoise = 1.5;
 
 
 botSim.setMap(modifiedMap);
@@ -8,20 +11,23 @@ botSim.setMap(modifiedMap);
 %generate some random particles inside the map
 particles(num,1) = BotSim; %how to set up a vector of objects
 
+Estimated_Bot = BotSim(modifiedMap, [sensorNoise, motionNoise, turningNoise], 0);
+Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(numscan));
+
 
 for i = 1:num
     particles(i) = BotSim(modifiedMap);  %each particle should use the same map as the botSim object
-    particles(i).randomPose(5); %spawn the particles in random locations
+    particles(i).randomPose(2); %spawn the particles in random locations
     particles(i).setScanConfig(generateScanConfig(particles(i), numscan));
    
-    particles(i).setMotionNoise(0.1); %give the particles some motion noise
-    particles(i).setTurningNoise(0.001);
-    particles(i).setSensorNoise(1.5);
+    particles(i).setMotionNoise(motionNoise); %give the particles some motion noise
+    particles(i).setTurningNoise(turningNoise);
+    particles(i).setSensorNoise(sensorNoise);
 end
 
 n = 0;
 converged = 0;
-variance = 100;   %variance
+variance = 50;   %variance
 damp = 0;
 while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
     n = n+1; %increment the current number of iterations   
@@ -35,7 +41,7 @@ while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
     
     for i=1:num
         if particles(i).insideMap() ==0
-            particles(i).randomPose(0);
+            particles(i).randomPose(2);
         end
         particle_Scan{i}= particles(i).ultraScan();
     end
@@ -81,8 +87,6 @@ while(converged == 0 && n < maxNumOfIterations) %%particle filter loop
 		end
 
 		%Set the mean estimate
-		Estimated_Bot = BotSim(modifiedMap);
-		Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(numscan));
 		Estimated_Bot.setBotPos(mean(positions));
 		Estimated_Bot.setBotAng(mean(angles));
         

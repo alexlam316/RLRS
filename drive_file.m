@@ -1,4 +1,4 @@
-function driver_file2()
+function driver_file()
 
 % verify that the RWTH - Mindstorms NXT toolbox is installed.
 if verLessThan('RWTHMindstormsNXT', '4.01');
@@ -16,31 +16,30 @@ handle = COM_OpenNXT(); %open usb port
 COM_SetDefaultNXT(handle); % set default handle
 
 localize_ON = 0; %set value to 1 to enable particle filter, 0 to disable
-path_mode = 3; % set value to 1 for choosing A-star algorithm, set value to 2 for choosing Dijkstra algorithm 
+path_mode = 3; % set value to 1 for choosing A-star algorithm, set value to 2 for choosing Dijkstra algorithm, 3 probablistic roadmap 
 
 map=[0,0;66,0;66,44;44,44;44,66;110,66;110,110;0,110];  %default map
 
-botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
-start_position = [44 22];
-start_angle = -45; % in degree
-target = [88 88];
 
-botSim.setBotPos(start_position);
+start_position = [44 22]; %if not using localisation, use this position as initial position
+start_angle = -45; % in degrees
+target = [88 88]; %target location
+scans = 30; %nr of scans
+tic %starts timer
+
+
+%% Initialise a botsim
+botSim = BotSim(map,[0,0,0]);  %sets up a botSim object a map, and debug mode on.
+botSim.setBotPos(start_position); 
 botSim.setBotAng(start_angle*pi/180);
+botSim.setMap(map);
+botSim.setScanConfig(botSim.generateScanConfig(scans));
 
 % botSim.drawMap();
 % drawnow;
 
-tic %starts timer
-%% Path Planning
-modifiedMap = map;
-scans = 30;
-inner_boundary = map;
-Connecting_Distance = 20;
-botSim.setMap(modifiedMap);
-botSim.setScanConfig(botSim.generateScanConfig(scans));
-
-Estimated_Bot = BotSim(modifiedMap);
+%% Localisation
+Estimated_Bot = BotSim(map);
 Estimated_Bot.setScanConfig(Estimated_Bot.generateScanConfig(scans));
 Estimated_Bot.setBotPos(start_position);
 Estimated_Bot.setBotAng(start_angle*pi/180);
@@ -53,26 +52,32 @@ Estimated_Bot.setBotAng(start_angle*pi/180);
 % drawnow;
 
 if (localize_ON == 1)   
-    [botSim, Estimated_Bot] = PFL1(botSim, map,2000,10, 20, handle);
+    [botSim, Estimated_Bot] = PFL(botSim, map,2000,10, 20, handle);
     disp(Estimated_Bot.getBotPos());
     disp(Estimated_Bot.getBotAng()*180/pi);
     Estimated_Bot.setBotPos(Estimated_Bot.getBotPos());
     Estimated_Bot.setBotAng(Estimated_Bot.getBotAng()*180/pi);   
 end
 
+%% Path planning
+% 1: A*
+% 2: Dijkstras
+% 3: Probablistic Roadmap
+
 if(path_mode == 1)
-    waypoints = pathPlanning(start_position, target, map, Connecting_Distance)
-    optimisedPath = optimisePath(waypoints)
+    Connecting_Distance = 20;
+    waypoints = pathPlanning(start_position, target, map, Connecting_Distance);
+    optimisedPath = optimisePath(waypoints);
 elseif(path_mode == 2)
     inflated_boundaries = boundary_inflation(map, 14);
     botSim.setMap(inflated_boundaries);
     botSim.drawMap();
     waypoint_coordinates = pathfinder(start_position, target, inflated_boundaries);
     waypoint_coordinates = flipud(waypoint_coordinates);
-    optimisedPath = [waypoint_coordinates(:,2),waypoint_coordinates(:,1)]
+    optimisedPath = [waypoint_coordinates(:,2),waypoint_coordinates(:,1)];
 elseif(path_mode == 3)
     path = pathPlanning2(botSim,map,target,start_position);
-    optimisedPath = optimisePath(path)*10;
+    optimisedPath = optimisePath(path)*10; % multiply by 10 to get from cm to mm format
 end
 
 %% Path Move
